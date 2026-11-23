@@ -32,6 +32,12 @@ if not 1 <= len(JOKE) <= 200:
 if not JOKE.strip():
     raise ValueError("joke must not be only whitespace")
 
+# The entry must be exactly one line: any newline inside the joke (or a
+# trailing newline added at write time) would make the file two lines and
+# break the one-line rule, so the gate rejects it here instead of at grade.
+if "\n" in JOKE or "\r" in JOKE:
+    raise ValueError("joke must be a single line, no newlines")
+
 def main():
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8", newline="") as f:
